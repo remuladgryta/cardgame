@@ -62,6 +62,7 @@ public class HandView extends JPanel implements
 				@Override
 				public void run() {
 					setHand(event.getHand());
+					handList.clearSelection();
 				}
 			});
 		}
