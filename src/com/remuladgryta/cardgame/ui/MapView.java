@@ -8,6 +8,8 @@ import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,7 +30,7 @@ import com.remuladgryta.hex.PixelCoord;
 import com.remuladgryta.util.Config;
 
 public class MapView extends JPanel implements MouseMotionListener,
-		MouseListener, EventListener {
+		MouseListener,MouseWheelListener, EventListener {
 	private GameMap map;
 	private Color hoverColor = new Color(0xF0FFFF);
 	private Color targetColor = new Color(0xFFFF00);
@@ -36,11 +38,13 @@ public class MapView extends JPanel implements MouseMotionListener,
 	private PixelCoord offset = new PixelCoord(0, 0);
 	private double viewScale = 32;
 	private CubeCoord hoveredTile = null, hoveredUnrounded = null;
+	private int lastMouseX, lastMouseY;
 
 	public MapView() {
 		super();
 		addMouseMotionListener(this);
 		addMouseListener(this);
+		addMouseWheelListener(this);
 		setPreferredSize(new Dimension(600, 400));
 	}
 
@@ -150,8 +154,12 @@ public class MapView extends JPanel implements MouseMotionListener,
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		int diffX = lastMouseX - e.getX();
+		int diffY = lastMouseY - e.getY();
+		lastMouseX = e.getX();
+		lastMouseY = e.getY();
+		setOffset(getOffset().add(new PixelCoord(-diffX,-diffY)));
+		repaint();
 	}
 
 	@Override
@@ -187,18 +195,25 @@ public class MapView extends JPanel implements MouseMotionListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		lastMouseX = e.getX();
+		lastMouseY = e.getY();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handleEvent(IEvent event) {// MapRenderStateChanged or
 											// PlayerStartTurn event
+		repaint();
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		viewScale *= 1d+(e.getWheelRotation()*0.2);
+		//offset = new PixelCoord(offset.getX()*(1+(e.getWheelRotation()*0.2)),offset.getY()*(1+(e.getWheelRotation()*0.2)));
 		repaint();
 	}
 }

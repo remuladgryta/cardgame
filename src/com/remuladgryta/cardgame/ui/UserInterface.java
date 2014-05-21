@@ -58,7 +58,7 @@ public class UserInterface {
 		frame.setLayout(layout);
 		
 		mapView = new MapView();
-		frame.add(mapView);
+		frame.add(mapView, "grow, push");
 		
 		frame.add(statusPane, "grow, pushy, spany 2, wrap");
 		
