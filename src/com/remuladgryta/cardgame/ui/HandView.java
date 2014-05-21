@@ -21,10 +21,10 @@ import com.remuladgryta.cardgame.Hand;
 import com.remuladgryta.cardgame.event.EventListener;
 import com.remuladgryta.cardgame.event.HandChangedEvent;
 import com.remuladgryta.cardgame.event.PlayerStartTurnEvent;
+import com.remuladgryta.util.Config;
 
 public class HandView extends JPanel implements
 		EventListener<PlayerStartTurnEvent> {
-	private final int ROWS_VISIBLE = 6;
 	private GameEngine engine;
 
 	private class HandModel extends AbstractListModel<Card> implements
@@ -76,7 +76,7 @@ public class HandView extends JPanel implements
 		super();
 		this.setLayout(new MigLayout());
 
-		handList.setVisibleRowCount(ROWS_VISIBLE);
+		handList.setVisibleRowCount(Config.maxHandSize);
 		handList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		add(new JScrollPane(handList), "grow, push");
 

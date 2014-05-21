@@ -7,5 +7,6 @@ public class Config {
 	
 	public static int
 	startHandSize = 6,
+	maxHandSize = 6,
 	mapSize = 3;
 }

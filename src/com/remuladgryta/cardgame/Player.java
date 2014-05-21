@@ -3,8 +3,11 @@ package com.remuladgryta.cardgame;
 import com.remuladgryta.cardgame.entity.ComponentHealth;
 import com.remuladgryta.cardgame.entity.ComponentRenderable;
 import com.remuladgryta.cardgame.entity.Entity;
+import com.remuladgryta.cardgame.event.EventListener;
+import com.remuladgryta.cardgame.event.PlayerStartTurnEvent;
+import com.remuladgryta.util.Config;
 
-public class Player {
+public class Player implements EventListener<PlayerStartTurnEvent>{
 	Hand hand;
 	Deck deck;
 	Entity playerEntity;
@@ -13,6 +16,7 @@ public class Player {
 		this.engine = engine;
 		hand = new Hand(this);
 		playerEntity = new Entity().addComponent(new ComponentHealth().setMaxHealth(20).setHealth(20)).addComponent(new ComponentRenderable());
+		engine.getEventDispatch().addListener(this, PlayerStartTurnEvent.class);
 	}
 	
 	public Entity getEntity(){
@@ -47,6 +51,13 @@ public class Player {
 			}
 		}
 
+	}
+
+	@Override
+	public void handleEvent(PlayerStartTurnEvent event) {
+		if(event.getPlayer() == this && hand.getSize() < Config.maxHandSize){
+			draw(1);
+		}
 	}
 
 }
