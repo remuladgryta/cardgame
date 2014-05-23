@@ -1,32 +1,37 @@
 package com.remuladgryta.cardgame;
 
 import com.remuladgryta.cardgame.entity.ComponentHealth;
+import com.remuladgryta.cardgame.entity.ComponentPlayer;
 import com.remuladgryta.cardgame.entity.ComponentRenderable;
 import com.remuladgryta.cardgame.entity.Entity;
 import com.remuladgryta.cardgame.event.EventListener;
 import com.remuladgryta.cardgame.event.PlayerStartTurnEvent;
 import com.remuladgryta.util.Config;
 
-public class Player implements EventListener<PlayerStartTurnEvent>{
+public class Player implements EventListener<PlayerStartTurnEvent> {
 	Hand hand;
 	Deck deck;
 	Entity playerEntity;
 	GameEngine engine;
-	public Player(GameEngine engine){
+
+	public Player(GameEngine engine) {
 		this.engine = engine;
 		hand = new Hand(this);
-		playerEntity = new Entity().addComponent(new ComponentHealth().setMaxHealth(20).setHealth(20)).addComponent(new ComponentRenderable());
+		playerEntity = new Entity()
+				.addComponent(new ComponentHealth().setMaxHealth(20).setHealth(20))
+				.addComponent(new ComponentRenderable())
+				.addComponent(new ComponentPlayer(this));
 		engine.getEventDispatch().addListener(this, PlayerStartTurnEvent.class);
 	}
-	
-	public Entity getEntity(){
+
+	public Entity getEntity() {
 		return playerEntity;
 	}
-	
-	public GameEngine getEngine(){
+
+	public GameEngine getEngine() {
 		return engine;
 	}
-	
+
 	public void setDeck(Deck deck) {
 		this.deck = deck;
 	}
@@ -55,7 +60,7 @@ public class Player implements EventListener<PlayerStartTurnEvent>{
 
 	@Override
 	public void handleEvent(PlayerStartTurnEvent event) {
-		if(event.getPlayer() == this && hand.getSize() < Config.maxHandSize){
+		if (event.getPlayer() == this && hand.getSize() < Config.maxHandSize) {
 			draw(1);
 		}
 	}
