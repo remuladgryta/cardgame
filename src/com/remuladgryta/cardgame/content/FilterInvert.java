@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.remuladgryta.cardgame.GameMap;
 import com.remuladgryta.cardgame.TileFilter;
 import com.remuladgryta.hex.CubeCoord;
 
@@ -18,8 +19,8 @@ public class FilterInvert extends TileFilter {
 	
 	@Override
 	protected Set<CubeCoord> filter(CubeCoord origin,
-			Set<CubeCoord> candidates) {
-		Set<CubeCoord> toRemove = invert.eligibleTargets(origin, candidates);
+			Set<CubeCoord> candidates, GameMap map) {
+		Set<CubeCoord> toRemove = invert.eligibleTargets(origin, candidates, map);
 		candidates.removeAll(toRemove);
 		return candidates;
 	}

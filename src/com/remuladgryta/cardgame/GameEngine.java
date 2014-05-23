@@ -70,7 +70,7 @@ public class GameEngine {
 				possibleTargets = new ArrayList<CubeCoord>(toPlay.getFilter()
 						.eligibleTargets(
 								event.getPlayer().getEntity().getLocation(),
-								map.getTiles()));
+								map.getTiles(),map));
 				eventDispatch.dispatch(new MapRenderStateChangedEvent());
 			}
 		};

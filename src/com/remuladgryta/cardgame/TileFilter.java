@@ -19,19 +19,19 @@ public abstract class TileFilter {
 	}
 
 	public Set<CubeCoord> eligibleTargets(CubeCoord origin,
-			Set<CubeCoord> candidates) {
+			Set<CubeCoord> candidates, GameMap map) {
 		Set<CubeCoord> result;
 		// recursive case
 		if (sup != null) {
-			result = sup.eligibleTargets(origin, candidates);
+			result = sup.eligibleTargets(origin, candidates, map);
 		}
 		// base case
 		else {
 			result = new HashSet<CubeCoord>(candidates);
 		}
-		return filter(origin, result);
+		return filter(origin, result, map);
 	}
 
 	protected abstract Set<CubeCoord> filter(CubeCoord origin,
-			Set<CubeCoord> candidates);
+			Set<CubeCoord> candidates, GameMap map);
 }
