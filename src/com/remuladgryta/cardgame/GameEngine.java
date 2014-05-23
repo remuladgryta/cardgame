@@ -1,5 +1,6 @@
 package com.remuladgryta.cardgame;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import com.remuladgryta.cardgame.event.MapRenderStateChangedEvent;
 import com.remuladgryta.cardgame.event.PlayerStartTurnEvent;
 import com.remuladgryta.hex.CubeCoord;
 import com.remuladgryta.util.Config;
+import com.remuladgryta.util.ImageUtil;
+import com.remuladgryta.util.SpriteLibrary;
 
 public class GameEngine {
 	private GameMap map;
@@ -35,22 +38,28 @@ public class GameEngine {
 	}
 
 	public GameEngine(int numPlayers) {
+		loadImages();
 		eventDispatch = new EventDispatch();
 		players = new ArrayList<Player>(numPlayers);
 		for (int i = 0; i < numPlayers; i++) {
 			Player p = new Player(this);
 			p.setDeck(Decks.get(Decks.DEFAULT));
-			ComponentRenderable renderComponent = (ComponentRenderable) (p.getEntity().getComponent("renderable"));
-			try {
-				renderComponent.setImage(ImageIO.read(getClass().getResource("/img/cardback.png")));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ComponentRenderable renderComponent = (ComponentRenderable) (p
+					.getEntity().getComponent("renderable"));
+			renderComponent.setImage(SpriteLibrary.get("entityp"+(i+1)));
 			players.add(p);
 		}
 		map = new GameMap(this, Config.mapSize);
 		registerListeners();
+	}
+
+	private void loadImages() {
+		BufferedImage back = SpriteLibrary.get("cardface");
+		for(int i = 1;i<=6;i++){
+			BufferedImage fg = SpriteLibrary.get("p"+i);
+			BufferedImage result = ImageUtil.composite(back, fg);
+			SpriteLibrary.add(result, "entityp"+i);
+		}
 	}
 
 	private void registerListeners() {
@@ -58,8 +67,10 @@ public class GameEngine {
 			@Override
 			public void handleEvent(CardReadyEvent event) {
 				toPlay = event.getCard();
-				possibleTargets = new ArrayList<CubeCoord>(toPlay.getFilter().eligibleTargets(
-						event.getPlayer().getEntity().getLocation(), map.tiles.keySet()));
+				possibleTargets = new ArrayList<CubeCoord>(toPlay.getFilter()
+						.eligibleTargets(
+								event.getPlayer().getEntity().getLocation(),
+								map.getTiles()));
 				eventDispatch.dispatch(new MapRenderStateChangedEvent());
 			}
 		};

@@ -89,8 +89,12 @@ public class GameMap {
 	 * Note: Modifying the returned set will result in unpredictable behavior
 	 * @return
 	 */
-	public Set<Entry<CubeCoord, List<Entity>>> getTiles(){
+	public Set<Entry<CubeCoord, List<Entity>>> getTileData(){
 		return Collections.unmodifiableSet(tiles.entrySet());
+	}
+	
+	public Set<CubeCoord> getTiles(){
+		return Collections.unmodifiableSet(tiles.keySet());
 	}
 
 	public boolean hasTile(CubeCoord tile) {

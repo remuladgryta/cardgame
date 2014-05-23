@@ -83,7 +83,7 @@ public class MapView extends JPanel implements MouseMotionListener,
 		}
 
 		if (map != null) {
-			for (Entry<CubeCoord, List<Entity>> e : map.getTiles()) {
+			for (Entry<CubeCoord, List<Entity>> e : map.getTileData()) {
 				paintTile(g, e.getKey(), e.getValue());
 			}
 		}
