@@ -24,6 +24,7 @@ public class Decks {
 			for(int i=0;i<10;i++){
 				cards.add(Cards.move);
 				cards.add(Cards.attack);
+				cards.add(Cards.egocentricity);
 			}
 		}
 		return new Deck(cards);
