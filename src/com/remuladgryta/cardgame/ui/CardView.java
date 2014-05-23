@@ -63,7 +63,7 @@ public class CardView extends JEditorPane implements ListSelectionListener,
 			sb.append(currentCard.getTitle());
 			sb.append("</b> <br/>");
 			sb.append(currentCard.getText());
-			sb.append("<br/> <br/>");
+			sb.append("<br/>");
 			if (interactive) {
 				// Add links to play/discard
 				sb.append("<a href=\"http://play\"> Play </a> &nbsp &nbsp &nbsp");
