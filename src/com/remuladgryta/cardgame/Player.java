@@ -17,7 +17,7 @@ public class Player implements EventListener<PlayerStartTurnEvent> {
 	public Player(GameEngine engine) {
 		this.engine = engine;
 		hand = new Hand(this);
-		playerEntity = new Entity()
+		playerEntity = new Entity(engine)
 				.addComponent(new ComponentHealth().setMaxHealth(20).setHealth(20))
 				.addComponent(new ComponentRenderable())
 				.addComponent(new ComponentPlayer(this));

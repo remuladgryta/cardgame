@@ -1,5 +1,7 @@
 package com.remuladgryta.cardgame.entity;
 
+import com.remuladgryta.cardgame.event.EntityDeadEvent;
+
 public class ComponentHealth extends EntityComponent{
 	private int maxHealth, curHealth;
 	
@@ -13,12 +15,19 @@ public class ComponentHealth extends EntityComponent{
 	}
 	public void damage(int amount){
 		curHealth-=amount;
+		if(curHealth <= 0){
+			onDead();
+		}
 	}
 	public void heal(int amount){
 		curHealth+=amount;
 		if(curHealth>maxHealth){
 			curHealth=maxHealth;
 		}
+	}
+	
+	private void onDead(){
+		entity.engine.getEventDispatch().dispatch(new EntityDeadEvent(entity));
 	}
 	
 	public int getHealth(){
