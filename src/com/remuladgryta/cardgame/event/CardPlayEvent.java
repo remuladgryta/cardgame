@@ -6,7 +6,6 @@ public class CardPlayEvent extends CardEvent {
 
 	public CardPlayEvent(Card card) {
 		super(card);
-		// TODO Auto-generated constructor stub
 	}
 
 }

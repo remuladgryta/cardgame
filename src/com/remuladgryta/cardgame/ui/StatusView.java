@@ -23,7 +23,7 @@ public class StatusView extends JPanel  implements EventListener<CardPlayedEvent
 	
 	private GameEngine engine;
 	
-	DefaultListModel<Card> listModel = new DefaultListModel<Card>();//TODO implement card model
+	DefaultListModel<Card> listModel = new DefaultListModel<Card>();
 	private JList<Card> cardLog = new JList<Card>(listModel);
 	private CardView cardText = new CardView();
 	JButton turnButton = new JButton("End turn");

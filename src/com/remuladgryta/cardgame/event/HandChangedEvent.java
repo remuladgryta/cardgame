@@ -14,14 +14,12 @@ public class HandChangedEvent implements IEvent {
 	
 	@Override
 	public boolean isCanceled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void cancel() {
-		// TODO Auto-generated method stub
-
+		//this event can't be cancelled.
 	}
 
 }
