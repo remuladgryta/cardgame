@@ -25,6 +25,7 @@ public class Decks {
 				cards.add(Cards.move);
 				cards.add(Cards.attack);
 				cards.add(Cards.egocentricity);
+				cards.add(Cards.insult);
 			}
 		}
 		return new Deck(cards);
