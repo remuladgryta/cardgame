@@ -1,9 +1,8 @@
-package com.remuladgryta.cardgame.content;
+package com.remuladgryta.cardgame.filter;
 
 import java.util.Set;
 
 import com.remuladgryta.cardgame.GameMap;
-import com.remuladgryta.cardgame.TileFilter;
 import com.remuladgryta.hex.CubeCoord;
 
 

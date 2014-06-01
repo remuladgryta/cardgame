@@ -1,10 +1,9 @@
-package com.remuladgryta.cardgame.content;
+package com.remuladgryta.cardgame.filter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import com.remuladgryta.cardgame.GameMap;
-import com.remuladgryta.cardgame.TileFilter;
 import com.remuladgryta.cardgame.entity.Entity;
 import com.remuladgryta.hex.CubeCoord;
 

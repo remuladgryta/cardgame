@@ -5,6 +5,7 @@ import java.util.List;
 import com.remuladgryta.cardgame.event.CardPlayEvent;
 import com.remuladgryta.cardgame.event.CardPlayedEvent;
 import com.remuladgryta.cardgame.event.CardReadyEvent;
+import com.remuladgryta.cardgame.filter.TileFilter;
 import com.remuladgryta.hex.CubeCoord;
 
 public class Card {

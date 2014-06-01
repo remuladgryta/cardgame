@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.remuladgryta.cardgame.Card;
 import com.remuladgryta.cardgame.ICardEffect;
+import com.remuladgryta.cardgame.filter.FilterIdentity;
 
 public class Cards {
 	public static Card

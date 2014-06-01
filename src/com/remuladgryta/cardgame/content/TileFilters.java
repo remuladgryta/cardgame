@@ -1,6 +1,9 @@
 package com.remuladgryta.cardgame.content;
 
-import com.remuladgryta.cardgame.TileFilter;
+import com.remuladgryta.cardgame.filter.FilterDistance;
+import com.remuladgryta.cardgame.filter.FilterInvert;
+import com.remuladgryta.cardgame.filter.TileFilter;
+
 
 public class TileFilters {
 	public static TileFilter 
