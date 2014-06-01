@@ -39,7 +39,6 @@ public class UserInterface {
 	
 	private void bindEngine() {
 		mapView.setMap(engine.getMap());
-		mapView.setOffset(new PixelCoord(200,200));
 		handPane.setEngine(engine);
 		statusPane.setEngine(engine);
 	}

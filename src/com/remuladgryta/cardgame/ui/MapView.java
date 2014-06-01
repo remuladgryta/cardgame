@@ -45,7 +45,7 @@ public class MapView extends JPanel implements MouseMotionListener,
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		addMouseWheelListener(this);
-		setPreferredSize(new Dimension(600, 400));
+		//setPreferredSize(new Dimension(600, 400));
 	}
 
 	public PixelCoord getOffset() {
@@ -90,7 +90,7 @@ public class MapView extends JPanel implements MouseMotionListener,
 	}
 
 	void paintTile(Graphics g, CubeCoord c, List<Entity> entities) {
-		PixelCoord p = HexMath.pixelFromCube(c, viewScale).add(offset);
+		PixelCoord p = HexMath.pixelFromCube(c, viewScale).add(offset.scale(viewScale).add(new PixelCoord(getWidth()/2,getHeight()/2)));
 		Polygon hex = makeHex(p, viewScale);
 
 		// fill hex background
@@ -158,7 +158,7 @@ public class MapView extends JPanel implements MouseMotionListener,
 		int diffY = lastMouseY - e.getY();
 		lastMouseX = e.getX();
 		lastMouseY = e.getY();
-		setOffset(getOffset().add(new PixelCoord(-diffX,-diffY)));
+		setOffset(getOffset().add(new PixelCoord(-diffX/viewScale,-diffY/viewScale)));
 		repaint();
 	}
 
