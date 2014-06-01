@@ -54,12 +54,18 @@ public class GameMap {
 	public List<Entity> entitiesAt(CubeCoord coord){
 		return Collections.unmodifiableList(new ArrayList<Entity>(tiles.get(coord)));
 	}
-	
-	public void moveEntity(Entity e, CubeCoord target){
-		tiles.get(e.getLocation()).remove(e);
-		tiles.get(target).add(e);
-		e.setLocation(target);
-		gameEngine.getEventDispatch().dispatch(new MapRenderStateChangedEvent());
+
+	public void moveEntity(Entity e, CubeCoord target) {
+		if (entitiesAt(target).size() < 7) {// can't move to a full tile
+			tiles.get(e.getLocation()).remove(e);
+			tiles.get(target).add(e);
+			e.setLocation(target);
+			gameEngine.getEventDispatch().dispatch(
+					new MapRenderStateChangedEvent());
+		} else {
+			throw new RuntimeException(
+					"Entity tried to move to full tile");
+		}
 	}
 	
 	public void removeEntity(CubeCoord coord, Entity e){
@@ -67,11 +73,16 @@ public class GameMap {
 		e.setLocation(null);
 		gameEngine.getEventDispatch().dispatch(new MapRenderStateChangedEvent());
 	}
-	
-	public void addEntity(CubeCoord coord, Entity e){
-		tiles.get(coord).add(e);
-		e.setLocation(coord);
-		gameEngine.getEventDispatch().dispatch(new MapRenderStateChangedEvent());
+
+	public void addEntity(CubeCoord coord, Entity e) {
+		if (entitiesAt(coord).size() < 7) {
+			tiles.get(coord).add(e);
+			e.setLocation(coord);
+			gameEngine.getEventDispatch().dispatch(
+					new MapRenderStateChangedEvent());
+		}else{
+			throw new RuntimeException("Tried to add entity to full tile");
+		}
 	}
 	
 	public void addEntityAtRandom(Entity e){
