@@ -17,7 +17,9 @@ import com.remuladgryta.cardgame.entity.ComponentRenderable;
 import com.remuladgryta.cardgame.event.CardReadyEvent;
 import com.remuladgryta.cardgame.event.EventDispatch;
 import com.remuladgryta.cardgame.event.EventListener;
+import com.remuladgryta.cardgame.event.GameOverEvent;
 import com.remuladgryta.cardgame.event.MapRenderStateChangedEvent;
+import com.remuladgryta.cardgame.event.PlayerEndTurnEvent;
 import com.remuladgryta.cardgame.event.PlayerStartTurnEvent;
 import com.remuladgryta.hex.CubeCoord;
 import com.remuladgryta.util.Config;
@@ -43,10 +45,11 @@ public class GameEngine {
 		players = new ArrayList<Player>(numPlayers);
 		for (int i = 0; i < numPlayers; i++) {
 			Player p = new Player(this);
+			p.setName("Player "+(i+1));
 			p.setDeck(Decks.get(Decks.DEFAULT));
 			ComponentRenderable renderComponent = (ComponentRenderable) (p
 					.getEntity().getComponent("renderable"));
-			renderComponent.setImage(SpriteLibrary.get("entityp"+(i+1)));
+			renderComponent.setImage(SpriteLibrary.get("entityp" + (i + 1)));
 			players.add(p);
 		}
 		map = new GameMap(this, Config.mapSize);
@@ -55,10 +58,10 @@ public class GameEngine {
 
 	private void loadImages() {
 		BufferedImage back = SpriteLibrary.get("cardface");
-		for(int i = 1;i<=6;i++){
-			BufferedImage fg = SpriteLibrary.get("p"+i);
+		for (int i = 1; i <= 6; i++) {
+			BufferedImage fg = SpriteLibrary.get("p" + i);
 			BufferedImage result = ImageUtil.composite(back, fg);
-			SpriteLibrary.add(result, "entityp"+i);
+			SpriteLibrary.add(result, "entityp" + i);
 		}
 	}
 
@@ -70,11 +73,34 @@ public class GameEngine {
 				possibleTargets = new ArrayList<CubeCoord>(toPlay.getFilter()
 						.eligibleTargets(
 								event.getPlayer().getEntity().getLocation(),
-								map.getTiles(),map));
+								map.getTiles(), map));
 				eventDispatch.dispatch(new MapRenderStateChangedEvent());
 			}
 		};
 		eventDispatch.addListener(cardReadyListener, CardReadyEvent.class);
+		
+		EventListener<PlayerEndTurnEvent> playerEndTurnListener = new EventListener<PlayerEndTurnEvent>(){
+
+			@Override
+			public void handleEvent(PlayerEndTurnEvent event) {
+				ArrayList<Player> alivePlayers = new ArrayList<Player>();
+				for(Player p : players){
+					if(p.alive){
+						alivePlayers.add(p);
+					}
+				}
+				if(alivePlayers.size()<2){
+					event.cancel();
+					if(alivePlayers.size()<1){
+						eventDispatch.dispatch(new GameOverEvent(null));
+					}else{
+						eventDispatch.dispatch(new GameOverEvent(alivePlayers.get(0)));
+					}
+				}
+			}
+			
+		};
+		eventDispatch.addListener(playerEndTurnListener, PlayerEndTurnEvent.class);
 	}
 
 	public EventDispatch getEventDispatch() {
@@ -102,11 +128,15 @@ public class GameEngine {
 	}
 
 	public void nextPlayer() {
-		currentPlayer++;
-		if (currentPlayer >= players.size()) {
-			currentPlayer = 0;
+		if (eventDispatch.dispatch(new PlayerEndTurnEvent(getCurrentPlayer()))) {
+			currentPlayer++;
+			if (currentPlayer >= players.size()) {
+				currentPlayer = 0;
+			}
+			eventDispatch
+					.dispatch(new PlayerStartTurnEvent(getCurrentPlayer()));
 		}
-		eventDispatch.dispatch(new PlayerStartTurnEvent(getCurrentPlayer()));
+
 	}
 
 	public void tileInteracted(CubeCoord coord) {

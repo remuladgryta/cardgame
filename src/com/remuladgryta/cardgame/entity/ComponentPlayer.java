@@ -26,7 +26,7 @@ public class ComponentPlayer extends EntityComponent implements EventListener<En
 	@Override
 	public void handleEvent(EntityDeadEvent event) {
 		if(event.getEntity() == entity){
-			//TODO player has died
+			player.setAlive(false);
 		}
 	}
 

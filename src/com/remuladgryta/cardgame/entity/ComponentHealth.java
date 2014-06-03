@@ -27,7 +27,9 @@ public class ComponentHealth extends EntityComponent{
 	}
 	
 	private void onDead(){
-		entity.engine.getEventDispatch().dispatch(new EntityDeadEvent(entity));
+		if(entity.engine.getEventDispatch().dispatch(new EntityDeadEvent(entity))){
+			entity.engine.getMap().removeEntity(entity.getLocation(),entity);
+		}
 	}
 	
 	public int getHealth(){

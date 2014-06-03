@@ -1,18 +1,17 @@
 package com.remuladgryta.cardgame.ui;
 
 import java.awt.Dimension;
-import java.awt.geom.Dimension2D;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.remuladgryta.cardgame.GameEngine;
-import com.remuladgryta.cardgame.GameMap;
-import com.remuladgryta.cardgame.event.MapRenderStateChangedEvent;
-import com.remuladgryta.hex.PixelCoord;
+import com.remuladgryta.cardgame.event.EventListener;
+import com.remuladgryta.cardgame.event.GameOverEvent;
 import com.remuladgryta.util.Config;
 
 public class UserInterface {
@@ -44,6 +43,19 @@ public class UserInterface {
 		mapView.setMap(engine.getMap());
 		handPane.setEngine(engine);
 		statusPane.setEngine(engine);
+		
+		EventListener<GameOverEvent> gameOverListener = new EventListener<GameOverEvent>(){
+			@Override
+			public void handleEvent(GameOverEvent event) {
+				if(event.getWinner()!=null){
+					JOptionPane.showMessageDialog(frame, event.getWinner().getName()+" wins!",  "Game Over", JOptionPane.PLAIN_MESSAGE);
+				}else{
+					JOptionPane.showMessageDialog(frame, "It's a draw!",  "Game Over", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		};
+		
+		engine.getEventDispatch().addListener(gameOverListener, GameOverEvent.class);
 	}
 
 	private void initialize() {

@@ -13,6 +13,16 @@ public class Player implements EventListener<PlayerStartTurnEvent> {
 	Deck deck;
 	Entity playerEntity;
 	GameEngine engine;
+	String name;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	boolean alive = true;
 
 	public Player(GameEngine engine) {
 		this.engine = engine;
@@ -42,6 +52,14 @@ public class Player implements EventListener<PlayerStartTurnEvent> {
 
 	public void setHand(Hand hand) {
 		this.hand = hand;
+	}
+	
+	public void setAlive(boolean alive){
+		this.alive = alive;
+	}
+	
+	public boolean getAlive(){
+		return alive;
 	}
 
 	public Deck getDeck() {
