@@ -35,7 +35,8 @@ public class MapView extends JPanel implements MouseMotionListener,
 	private Color hoverColor = new Color(0xF0FFFF);
 	private Color targetColor = new Color(0xFFFF00);
 	private Color playerColor = new Color(0x00FF00);
-	private PixelCoord offset = new PixelCoord(0, 0);
+	private PixelCoord offset = new PixelCoord(0, 0),
+			viewCenter = new PixelCoord(getWidth()/2,getHeight()/2);
 	private double viewScale = 32;
 	private CubeCoord hoveredTile = null, hoveredUnrounded = null;
 	private int lastMouseX, lastMouseY;
@@ -45,7 +46,6 @@ public class MapView extends JPanel implements MouseMotionListener,
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		addMouseWheelListener(this);
-		//setPreferredSize(new Dimension(600, 400));
 	}
 
 	public PixelCoord getOffset() {
@@ -90,7 +90,8 @@ public class MapView extends JPanel implements MouseMotionListener,
 	}
 
 	void paintTile(Graphics g, CubeCoord c, List<Entity> entities) {
-		PixelCoord p = HexMath.pixelFromCube(c, viewScale).add(offset.scale(viewScale).add(new PixelCoord(getWidth()/2,getHeight()/2)));
+		viewCenter = new PixelCoord(getWidth()/2,getHeight()/2);
+		PixelCoord p = HexMath.pixelFromCube(c, viewScale).add(offset.scale(viewScale).add(viewCenter));
 		Polygon hex = makeHex(p, viewScale);
 
 		// fill hex background
@@ -134,9 +135,6 @@ public class MapView extends JPanel implements MouseMotionListener,
 						(int)Math.round(entityPos.getX() + imageSize.getX() / 2),
 						(int)Math.round(entityPos.getY() + imageSize.getY() / 2), 0, 0,
 						img.getWidth(), img.getHeight(), null);
-
-				// renderComponent.getImage()
-
 			}
 		}
 	}
@@ -166,7 +164,7 @@ public class MapView extends JPanel implements MouseMotionListener,
 	public void mouseMoved(MouseEvent e) {
 		PixelCoord coord = new PixelCoord(e.getPoint().getX(), e.getPoint()
 				.getY());
-		coord = coord.add(offset.invert());
+		coord = coord.add(offset.scale(viewScale).add(viewCenter).invert());
 		hoveredUnrounded = HexMath.cubeFromPixel(coord, viewScale);
 		hoveredTile = HexMath.round(hoveredUnrounded);
 
@@ -207,7 +205,6 @@ public class MapView extends JPanel implements MouseMotionListener,
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		viewScale *= 1d+(e.getWheelRotation()*0.2);
-		//offset = new PixelCoord(offset.getX()*(1+(e.getWheelRotation()*0.2)),offset.getY()*(1+(e.getWheelRotation()*0.2)));
 		repaint();
 	}
 }
