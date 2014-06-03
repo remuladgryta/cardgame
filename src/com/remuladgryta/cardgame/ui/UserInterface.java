@@ -1,5 +1,8 @@
 package com.remuladgryta.cardgame.ui;
 
+import java.awt.Dimension;
+import java.awt.geom.Dimension2D;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,6 +50,8 @@ public class UserInterface {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Cardgame");
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setPreferredSize(new Dimension(1200,600));
 		
 		MigLayout layout;
 		if(Config.debugUI){
