@@ -61,8 +61,8 @@ public class HandView extends JPanel implements
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					setHand(event.getHand());
 					handList.clearSelection();
+					setHand(event.getHand());
 				}
 			});
 		}
