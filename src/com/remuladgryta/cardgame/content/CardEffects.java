@@ -63,6 +63,7 @@ public class CardEffects {
 
 				List<CubeCoord> toRotate = HexMath.inRange(target, 1);
 				toRotate.remove(target);
+				toRotate.retainAll(tiles);
 
 				for (int step = 0; step < steps; step++) {
 					List<Entity> tmp = map.entitiesAt(toRotate.get(toRotate
