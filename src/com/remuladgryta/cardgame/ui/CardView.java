@@ -50,7 +50,7 @@ public class CardView extends JEditorPane implements ListSelectionListener,
 	}
 
 	public void setCardList(JList<Card> cardList) {
-		if(this.cardList != null){
+		if (this.cardList != null) {
 			this.cardList.removeListSelectionListener(this);
 			this.cardList.getModel().removeListDataListener(this);
 		}
@@ -63,8 +63,8 @@ public class CardView extends JEditorPane implements ListSelectionListener,
 	public void valueChanged(ListSelectionEvent evt) {
 		updateView();
 	}
-	
-	private void updateView(){
+
+	private void updateView() {
 		StringBuilder sb = new StringBuilder();
 		currentCard = cardList.getSelectedValue();
 		if (currentCard != null) {
@@ -75,8 +75,7 @@ public class CardView extends JEditorPane implements ListSelectionListener,
 			sb.append(currentCard.getText());
 			sb.append("<br/>");
 			if (interactive) {
-				// Add links to play/discard
-				sb.append("<a href=\"http://play\"> Play </a> &nbsp &nbsp &nbsp");
+				// Add link to discard
 				sb.append("<a href=\"http://discard\"> Discard </a>");
 			}
 		}
@@ -86,9 +85,7 @@ public class CardView extends JEditorPane implements ListSelectionListener,
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent event) {
 		if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-			if (event.getURL().getHost().equals("play")) {
-				currentCard.selectForPlay(engine.getCurrentPlayer());
-			} else if (event.getURL().getHost().equals("discard")) {
+			if (event.getURL().getHost().equals("discard")) {
 				engine.getCurrentPlayer().getHand().removeCard(currentCard);
 			}
 		}

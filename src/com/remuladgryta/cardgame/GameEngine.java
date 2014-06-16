@@ -143,6 +143,10 @@ public class GameEngine {
 		if (possibleTargets != null && possibleTargets.contains(coord)) {
 			toPlay.play(getCurrentPlayer(), coord);
 		}
+		clearReadiedCard();
+	}
+	
+	public void clearReadiedCard(){
 		possibleTargets = null;
 		toPlay = null;
 		eventDispatch.dispatch(new MapRenderStateChangedEvent());

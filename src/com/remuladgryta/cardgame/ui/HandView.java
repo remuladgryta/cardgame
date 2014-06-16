@@ -74,17 +74,25 @@ public class HandView extends JPanel implements
 
 	public HandView() {
 		super();
-		this.setLayout(new MigLayout());
-
+		
 		handList.setVisibleRowCount(Config.maxHandSize);
 		handList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		add(new JScrollPane(handList), "grow, push");
+		handList.addListSelectionListener(new ListSelectionListener(){
 
-		cardText.setCardList(handList);
+			@Override
+			public void valueChanged(ListSelectionEvent evt) {
+				onCardSelected();
+			}});
+		
 		cardText.setInteractive(true);
-		// cardText.setText("Lorem ipsum dolor sit amet.");
+		cardText.setCardList(handList);
+		myLayout();
+	}
+	
+	private void myLayout(){
+		this.setLayout(new MigLayout());
+		add(new JScrollPane(handList), "grow, push");
 		add(new JScrollPane(cardText), "grow, push");
-
 	}
 
 	public void setEngine(GameEngine engine) {
@@ -92,6 +100,8 @@ public class HandView extends JPanel implements
 		engine.getEventDispatch().addListener(this, PlayerStartTurnEvent.class);
 		engine.getEventDispatch().addListener(model, HandChangedEvent.class);
 		cardText.setEngine(engine);
+		
+		
 	}
 
 	@Override
@@ -100,7 +110,17 @@ public class HandView extends JPanel implements
 			@Override
 			public void run() {
 				model.setHand(event.getPlayer().getHand());
+				handList.clearSelection();
 			}
 		});
 	}
+	
+private void onCardSelected(){
+	Card c = handList.getSelectedValue();
+	if(c != null){
+		c.selectForPlay(engine.getCurrentPlayer());
+	}else{
+		engine.clearReadiedCard();
+	}
+}
 }
