@@ -11,8 +11,9 @@ public class ComponentRenderable extends EntityComponent {
 	public BufferedImage getImage() {
 		return image;
 	}
-	public void setImage(BufferedImage image) {
+	public ComponentRenderable setImage(BufferedImage image) {
 		this.image = image;
+		return this;
 	}
 
 }
