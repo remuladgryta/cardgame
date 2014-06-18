@@ -46,7 +46,11 @@ public class GameEngine {
 		for (int i = 0; i < numPlayers; i++) {
 			Player p = new Player(this);
 			p.setName("Player "+(i+1));
-			p.setDeck(Decks.get(Decks.DEFAULT));
+			if(Config.debugCard){
+				p.setDeck(Decks.get(Decks.DEBUG));
+			}else{
+				p.setDeck(Decks.get(Decks.DEFAULT));
+			}
 			ComponentRenderable renderComponent = (ComponentRenderable) (p
 					.getEntity().getComponent("renderable"));
 			renderComponent.setImage(SpriteLibrary.get("entityp" + (i + 1)));
