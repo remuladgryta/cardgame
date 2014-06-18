@@ -8,9 +8,11 @@ import com.remuladgryta.cardgame.GameMap;
 import com.remuladgryta.cardgame.ICardEffect;
 import com.remuladgryta.cardgame.Player;
 import com.remuladgryta.cardgame.entity.ComponentHealth;
+import com.remuladgryta.cardgame.entity.ComponentRenderable;
 import com.remuladgryta.cardgame.entity.Entity;
 import com.remuladgryta.hex.CubeCoord;
 import com.remuladgryta.hex.HexMath;
+import com.remuladgryta.util.SpriteLibrary;
 
 public class CardEffects {
 	public static final ICardEffect DISCARD = new ICardEffect() {
@@ -18,7 +20,8 @@ public class CardEffects {
 		public void onPlay(Card card, Player player, CubeCoord target) {
 			player.getHand().removeCard(card);
 		}
-	}, MOVE = new ICardEffect() {
+	};
+	public static final ICardEffect MOVE = new ICardEffect() {
 		@Override
 		public void onPlay(Card card, Player player, CubeCoord target) {
 			Entity e = player.getEntity();
@@ -84,5 +87,27 @@ public class CardEffects {
 
 		};
 	}
+
+	public static ICardEffect WALL = new ICardEffect() {
+
+		@Override
+		public void onPlay(Card card, Player player, CubeCoord target) {
+			GameMap map = player.getEngine().getMap();
+			for (int i = 7-map.entitiesAt(target).size(); i > 0; i--) {
+				player.getEngine()
+						.getMap()
+						.addEntity(
+								target,
+								new Entity(player.getEngine()).addComponent(
+										new ComponentHealth()
+												.setMaxHealth(5)
+												.setHealth(5)).addComponent(
+										new ComponentRenderable()
+												.setImage(SpriteLibrary
+														.get("wall"))));
+			}
+		}
+
+	};
 
 }
