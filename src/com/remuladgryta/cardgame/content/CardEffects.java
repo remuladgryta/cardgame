@@ -6,6 +6,7 @@ import java.util.Set;
 import com.remuladgryta.cardgame.Card;
 import com.remuladgryta.cardgame.GameMap;
 import com.remuladgryta.cardgame.ICardEffect;
+import com.remuladgryta.cardgame.IEntityFactory;
 import com.remuladgryta.cardgame.Player;
 import com.remuladgryta.cardgame.entity.ComponentHealth;
 import com.remuladgryta.cardgame.entity.ComponentRenderable;
@@ -88,26 +89,38 @@ public class CardEffects {
 		};
 	}
 
-	public static ICardEffect WALL = new ICardEffect() {
-
-		@Override
-		public void onPlay(Card card, Player player, CubeCoord target) {
-			GameMap map = player.getEngine().getMap();
-			for (int i = 7-map.entitiesAt(target).size(); i > 0; i--) {
-				player.getEngine()
-						.getMap()
-						.addEntity(
-								target,
-								new Entity(player.getEngine()).addComponent(
-										new ComponentHealth()
-												.setMaxHealth(5)
-												.setHealth(5)).addComponent(
-										new ComponentRenderable()
-												.setImage(SpriteLibrary
-														.get("wall"))));
+	public static ICardEffect SUMMON(final IEntityFactory factory,
+			final int count) {
+		return new ICardEffect() {
+			@Override
+			public void onPlay(Card card, Player player, CubeCoord target) {
+				GameMap map = player.getEngine().getMap();
+				for (int i = count - map.entitiesAt(target).size(); i > 0; i--) {
+					// Don't summon more than can fit on the tile
+					player.getEngine().getMap()
+							.addEntity(target, factory.makeEntity());
+				}
 			}
-		}
 
-	};
+		};
+	}
+
+	public static ICardEffect WALL() {
+		return new ICardEffect(){
+			@Override
+			public void onPlay(Card card, final Player player, CubeCoord target) {
+				IEntityFactory wallFactory = new IEntityFactory() {
+					@Override
+					public Entity makeEntity() {
+						Entity e = new Entity(player.getEngine());
+						e.addComponent(new ComponentHealth().setMaxHealth(5).setHealth(5));
+						e.addComponent(new ComponentRenderable().setImage(SpriteLibrary.get("wall")));
+						return e;
+					}
+				};
+				
+				SUMMON(wallFactory, 7).onPlay(card, player, target);
+			}};
+	}
 
 }
