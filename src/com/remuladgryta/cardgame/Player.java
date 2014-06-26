@@ -14,6 +14,11 @@ public class Player implements EventListener<PlayerStartTurnEvent> {
 	Entity playerEntity;
 	GameEngine engine;
 	String name;
+	
+	@Override
+	public String toString(){
+		return name + ": " + ((ComponentHealth)playerEntity.getComponent("health")).getHealth();
+	}
 	public String getName() {
 		return name;
 	}

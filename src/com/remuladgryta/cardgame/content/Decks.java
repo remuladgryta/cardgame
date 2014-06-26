@@ -29,6 +29,7 @@ public class Decks {
 				cards.add(Cards.attack());
 				cards.add(Cards.egocentricity());
 				cards.add(Cards.insult());
+				cards.add(Cards.wall());
 			}
 		}
 		return new Deck(cards);

@@ -4,7 +4,7 @@ public class Config {
 	public static boolean 
 	debugUI = false,
 	debugEvent = false,
-	debugCard = true;
+	debugCard = false;
 	
 	public static int
 	startHandSize = 6,

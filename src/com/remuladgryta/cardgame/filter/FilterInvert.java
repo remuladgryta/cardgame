@@ -11,6 +11,10 @@ public class FilterInvert extends TileFilter {
 
 	TileFilter invert;
 	
+	public FilterInvert(TileFilter toInvert){
+		this(null,toInvert);
+	}
+	
 	public FilterInvert(TileFilter sup, TileFilter toInvert){
 		super(sup);
 		invert = toInvert;

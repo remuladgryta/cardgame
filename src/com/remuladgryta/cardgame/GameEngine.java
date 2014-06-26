@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -129,6 +130,10 @@ public class GameEngine {
 
 	public Player getCurrentPlayer() {
 		return players.get(currentPlayer);
+	}
+	
+	public List<Player> getPlayers(){
+		return Collections.unmodifiableList(players);
 	}
 
 	public void nextPlayer() {
